@@ -1,0 +1,51 @@
+--1. What is the overall trend in liquor sales in Iowa over the years covered by this dataset?
+SELECT
+EXTRACT(YEAR FROM date) AS year, 
+    SUM(sale_dollars) AS sales 
+FROM
+`bigquery-public-data.iowa_liquor_sales.sales`
+GROUP BY year
+ORDER BY year ASC 
+LIMIT 1000 ;
+
+--2. Which are the most popular liquor brands and categories sold in Iowa?
+
+--categories
+SELECT
+category_name,
+    COUNT(*) AS num
+FROM
+`bigquery-public-data.iowa_liquor_sales.sales`
+GROUP BY category_name
+ORDER BY num DESC
+LIMIT 10;
+
+--brands 
+SELECT 
+ item_description, 
+ COUNT(*) AS num 
+FROM 
+`bigquery-public-data.iowa_liquor_sales.sales` 
+GROUP BY item_description 
+ORDER BY  num DESC 
+LIMIT 10;
+
+--3. Are there seasonal patterns in liquor sales?
+SELECT
+EXTRACT(MONTH FROM date) AS month, 
+    SUM(sale_dollars) AS sales
+
+FROM
+`bigquery-public-data.iowa_liquor_sales.sales`
+GROUP BY month 
+ORDER BY month ASC;
+
+--4. Which counties have the highest sales?
+SELECT
+county, 
+    SUM(sale_dollars) AS sales 
+FROM
+`bigquery-public-data.iowa_liquor_sales.sales`
+GROUP BY county 
+ORDER BY sales DESC 
+LIMIT 10;   
